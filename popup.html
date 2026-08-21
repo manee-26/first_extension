@@ -3,31 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World Extension</title>
+  <title>Planner</title>
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="icon-wrapper">
-      <div class="icon-pulse"></div>
-      <span class="icon">👋</span>
-    </div>
 
-    <h1 class="title">Hello, World!</h1>
-    <p class="subtitle">Your first Chrome extension is working!</p>
+  <!-- ════ MODAL: Add Task ════ -->
+  <div class="overlay hidden" id="overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span>📋</span>
+        <h2 class="modal-title">Add New Task</h2>
+      </div>
 
-    <div class="card">
-      <p class="card-text">🎉 Congrats on building your first extension!</p>
-    </div>
+      <div class="form-group">
+        <label class="form-label">Task Name</label>
+        <input type="text" class="form-input" id="modalName"
+               placeholder="e.g. Morning Run, Study, Read…" autocomplete="off" />
+      </div>
 
-    <button class="btn" id="greetBtn">Say Hello Again</button>
+      <div class="form-group">
+        <label class="form-label">Days to Track</label>
+        <div class="presets" id="presets">
+          <button class="preset active" data-val="7">7</button>
+          <button class="preset" data-val="14">14</button>
+          <button class="preset" data-val="21">21</button>
+          <button class="preset" data-val="30">30</button>
+        </div>
+        <div class="custom-row">
+          <span class="form-label" style="margin:0">Custom:</span>
+          <input type="number" class="custom-inp" id="customDays"
+                 min="1" max="365" placeholder="e.g. 45" />
+          <span class="form-label" style="margin:0">days</span>
+        </div>
+        <p class="days-hint">
+          Tracking <strong id="daysNumLabel">7</strong> days from your start date
+        </p>
+      </div>
 
-    <p class="message" id="message"></p>
-
-    <div class="footer">
-      <span>Made with ❤️ by Maneeshareddy</span>
+      <div class="modal-btns">
+        <button class="btn-cancel" id="btnCancel">Cancel</button>
+        <button class="btn-confirm" id="btnConfirm">Add Task</button>
+      </div>
     </div>
   </div>
+
+  <!-- ════ MAIN APP ════ -->
+  <div class="app">
+
+    <header class="header">
+      <div class="header-left">
+        <span class="logo">📋</span>
+        <div>
+          <h1 class="app-title">Planner</h1>
+          <p class="app-sub" id="startDateLabel"></p>
+        </div>
+      </div>
+      <button class="btn-add" id="addBtn">＋ Add Task</button>
+    </header>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+      <table class="planner-table" id="plannerTable">
+        <thead>
+          <tr id="headerRow">
+            <th class="col-task">Task</th>
+            <!-- day columns injected by JS -->
+            <th class="col-del"></th>
+          </tr>
+        </thead>
+        <tbody id="taskBody"></tbody>
+      </table>
+
+      <div class="empty-state hidden" id="emptyState">
+        <span>🗓️</span>
+        <p>No tasks yet — click <strong>Add Task</strong> to begin!</p>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="progress-row">
+        <span id="progressLbl">0 / 0 completed</span>
+        <span id="progressPct" class="pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </footer>
+
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
